@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card">
+    <div class="card-header bg-primary text-white fw-bold">
+      <i class="bi bi-list-task"></i> Tasks (new control flow)
+    </div>
+    <input class="form-control" #search placeholder="Search" (keyup)="searchTask(search.value)">
+    <ul class="list-group list-group-flush">
+      @for (task of tasks;track task.content;let index=$index;let count=$count;let first=$first;) {
+        <li class="list-group-item">
+          <span [ngClass]="{'text-success':first}">
+            {{ index }}/{{ count }}
+          </span>
+          @switch (task.state) {
+            @case (ProgressEnum.FINISHED) {
+              <i class="bi bi-check2-square text-success"></i>
+            }
+            @case (ProgressEnum.IN_PROGRESS) {
+              <i class="bi bi-hourglass-split text-primary"></i>
+            }
+            @default {
+              <i class="bi bi-alarm"></i>
+            }
+          }
+          {{ task.content }}
+          @if (task.urgent) {
+            <span class="badge bg-danger">urgent</span>
+          } @else {
+            <span class="badge bg-secondary">not urgent</span>
+          }
+        </li>
+      } @empty {
+        <div class="p-3">
+          No tasks :(
+        </div>
+      }
+    </ul>
+  </div>
+</div>

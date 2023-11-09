@@ -1,0 +1,29 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="card">
+    <div class="card-header bg-primary text-white fw-bold">
+      <i class="bi bi-list-task"></i> Tasks (old control flow)
+    </div>
+    <input class="form-control" #search placeholder="Search" (keyup)="searchTask(search.value)">
+    <ul class="list-group list-group-flush">
+      <li *ngFor="let task of tasks; let index= index; let count=count; let first=first;" class="list-group-item">
+          <span [ngClass]="{'text-success':first}">
+            {{ index }}/{{ count }}
+          </span>
+        <ng-container [ngSwitch]="task.state">
+          <i *ngSwitchCase="ProgressEnum.FINISHED" class="bi bi-check2-square text-success"></i>
+          <i *ngSwitchCase="ProgressEnum.IN_PROGRESS" class="bi bi-hourglass-split text-primary"></i>
+          <i *ngSwitchDefault class="bi bi-alarm"></i>
+        </ng-container>
+
+        {{ task.content }}
+        <span *ngIf="task.urgent; else notUrgent" class="badge bg-danger">urgent</span>
+        <ng-template #notUrgent>
+          <span class="badge bg-secondary">not urgent</span>
+        </ng-template>
+      </li>
+    </ul>
+    <div *ngIf="!tasks.length" class="p-3">
+      No tasks :(
+    </div>
+  </div>
+</div>
